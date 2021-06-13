@@ -1,0 +1,278 @@
+---
+swagger: "2.0"
+info:
+  description: |
+    Book Store Assessment API
+  version: 1.0.0
+  title: Book Store Assessment API
+  contact:
+    name: Ritesh
+    email: ritesh1ly@gmail.com
+    url: https://www.linkedin.com/in/ritesh1ly/
+host: virtserver.swaggerhub.com
+basePath: /bookstore/1.0.0
+schemes:
+- https
+- http
+paths:
+  /books:
+    post:
+      tags:
+      - Book
+      summary: Create a new book
+      consumes:
+      - application/json
+      - application/xml
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - in: body
+        name: body
+        description: Create new book
+        required: true
+        schema:
+          $ref: '#/definitions/BookInfo'
+      responses:
+        "201":
+          description: Successfully created a book
+        "400":
+          description: Failed due to bad input
+    get:
+      tags:
+      - Book
+      summary: find all books
+      consumes:
+      - application/json
+      - application/xml
+      produces:
+      - application/json
+      - application/xml
+      responses:
+        "200":
+          description: Read successfully
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/BookInfo'
+        "400":
+          description: Failed due to bad input
+  /books/{id}:
+    parameters:
+      - name: id
+        in: path
+        description: book id
+        required: true
+        type: number
+    get:
+      tags:
+      - Book
+      summary: Get book details using id
+      consumes:
+      - application/json
+      - application/xml
+      produces:
+      - application/json
+      - application/xml
+      responses:
+        "200":
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/BookInfo'
+        "404":
+          description: No books found with the given id
+    put:
+      tags:
+      - Book
+      summary: Update a book
+      consumes:
+      - application/json
+      - application/xml
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - in: body
+        name: body
+        description: Create new book
+        required: true
+        schema:
+          $ref: '#/definitions/BookInfo'
+      responses:
+        "204":
+          description: Updated Successfully
+        "400":
+          description: Updated failed due to bad input
+        "404":
+          description: Unable to find book with the given id
+    patch:
+      tags:
+      - Book
+      summary: Update author/classification/price of a book
+      consumes:
+      - application/json
+      - application/xml
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - in: body
+        name: body
+        description: Create new book
+        required: true
+        schema:
+          $ref: '#/definitions/BookInfo'
+      responses:
+        "204":
+          description: Updated Successfully
+        "400":
+          description: Updated failed due to bad input
+        "404":
+          description: Unable to find book with the given id
+    delete:
+      tags:
+      - Book
+      summary: Delete a book
+      consumes:
+      - application/json
+      - application/xml
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - in: body
+        name: body
+        description: Create new book
+        required: true
+        schema:
+          $ref: '#/definitions/BookInfo'
+      responses:
+        "200":
+          description: Delete the book successfully
+        "404":
+          description: Unable to find book with the given id    
+  /cart:          
+    post:
+      tags:
+      - Shopping Cart
+      summary: Add one or more books to cart and find the amount payable
+      consumes:
+      - application/json
+      - application/xml
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - in: body
+        name: body
+        description: Payment Update Requests from Skiply
+        required: true
+        schema:
+          $ref: '#/definitions/CartRequestInfo'
+      responses:
+        "200":
+          description: Added to cart successfully
+          schema:
+            $ref: '#/definitions/CartResponseInfo'
+        "400":
+          description: Unable to add to cart due to bad input
+definitions:
+  BookInfo:
+    type: object
+    properties:
+      id:
+        type: number
+        description: id
+      name:
+        type: string
+        description: Name of book
+      description:
+        type: string
+        description: Book description
+      author:
+        type: string
+        description: Author Name
+      price:
+        type: number
+        format: double
+        description: price of the book
+      isbn:
+        type: string
+        description: ISBN
+      classification:
+        type: string
+        description: Book classification
+        enum:
+        - FICTION
+        - COMIC
+        - ADVENTURE
+        - TRAVEL
+        - HEALTH
+        - MYSTERY
+    xml:
+      name: BookInfo
+  CartRequestInfo:
+    type: object
+    properties:
+      cartItems:
+        type: array
+        items: 
+          $ref: '#/definitions/CartItemRequest'
+        description: Cart items array
+      promotionCode:
+        type: string
+        description: Promotion Code
+    xml:
+      name: CartRequestInfo
+  CartItemRequest:
+    type: object
+    properties:
+      bookId:
+        type: number
+        description: Book Id
+      quantity:
+        type: number
+        description: Quanity selected
+    xml:
+      name: CartItemRequest
+  CartResponseInfo:
+    type: object
+    properties:
+      promotionCode:
+        type: number
+        format: double
+        description: Promotion Code
+      amountPayable:
+        type: string
+        description: Total Amount Payable
+      cartItems:
+        type: array
+        items: 
+          $ref: '#/definitions/CartItemResponse'
+        description: Cart items array
+    xml:
+      name: CartResponseInfo
+  CartItemResponse:
+    type: object
+    properties:
+      bookId:
+        type: number
+        description: Book Id
+      quantity:
+        type: number
+        description: Quanity selected
+      subTotal:
+        type: number
+        format: double
+        description: Subtotal (quantity x unit price)
+      subTotalAfterDiscount:
+        type: number
+        format: double
+        description: Subtotal after deducting discount
+    xml:
+      name: CartItemResponse    
+externalDocs:
+  description: API specification for bookstore assessment
+  url: http://swagger.io

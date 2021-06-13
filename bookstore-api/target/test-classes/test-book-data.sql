@@ -1,0 +1,1 @@
+INSERT INTO BOOK (ID, NAME, DESCRIPTION, AUTHOR, CLASSIFICATION, PRICE, ISBN) VALUES (10, 'The Hobbit', 'The Hobbit, or There and Back Again is a children''s fantasy novel by English author J. R. R. Tolkien.', 'J. R. R. Tolkien', 'FICTION', 100, '978-3-16-148410-0');

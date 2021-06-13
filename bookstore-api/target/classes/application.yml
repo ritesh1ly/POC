@@ -1,0 +1,31 @@
+server:
+  tomcat:
+    max-threads: 20
+resilience4j.bulkhead:
+  instances:
+    saveNewBook:
+      maxConcurrentCalls: 15
+      maxWaitDuration: 1500ms	
+saveNewBook:
+  service:
+    url: http://localhost:8080/books
+resilience4j.ratelimiter:
+  instances:
+    saveNewBook:
+      limitForPeriod: 50
+      limitRefreshPeriod: 60s
+      timeoutDuration: 0
+resilience4j.retry:
+  instances:
+    saveNewBook:
+      maxRetryAttempts: 3
+      waitDuration: 10s
+      retryExceptions:
+        - org.springframework.web.client.HttpServerErrorException
+      ignoreExceptions:
+        - org.springframework.web.client.HttpClientErrorException
+resilience4j.timelimiter:
+  instances:
+    saveNewBook:
+      timeoutDuration: 3s
+      cancelRunningFuture: true
